@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>加法计算器</title>
+</head>
+<body>
+  <h1>加法计算器</h1>
+
+  A: <input type="number" id="inputA">
+  <br><br>
+  B: <input type="number" id="inputB">
+  <br><br>
+
+  <button onclick="sendSumRequest()">Calculate</button>
+
+  <br><br>
+  结果: <span id="resultArea">等待计算</span>
+
+  <script>
+    function sendSumRequest() {
+      const a = document.getElementById("inputA").value;
+      const b = document.getElementById("inputB").value;
+
+      fetch("https://fastapi-sum-calculator.onrender.com/sum", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({a: parseInt(a), b: parseInt(b)})
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("resultArea").innerText = data.sum;
+      })
+      .catch(error => {
+        document.getElementById("resultArea").innerText = "错误";
+      });
+    }
+  </script>
+</body>
+</html>
